@@ -38,12 +38,12 @@ export default function TransactionForm({ onAddTransaction }: TransactionFormPro
 
   const incomeForm = useForm<z.infer<typeof incomeSchema>>({
     resolver: zodResolver(incomeSchema),
-    defaultValues: { description: '', amount: undefined },
+    defaultValues: { description: '', amount: '' as any },
   });
 
   const spendingForm = useForm<z.infer<typeof spendingSchema>>({
     resolver: zodResolver(spendingSchema),
-    defaultValues: { description: '', amount: undefined },
+    defaultValues: { description: '', amount: '' as any },
   });
 
   function onIncomeSubmit(values: z.infer<typeof incomeSchema>) {
