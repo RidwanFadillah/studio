@@ -23,11 +23,11 @@ export default function Home() {
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <div className="flex flex-col gap-8 lg:col-span-2">
           <BalanceDisplay transactions={transactions} />
+          <TransactionForm onAddTransaction={addTransaction} />
           <TransactionList transactions={transactions} />
         </div>
 
         <div className="flex flex-col gap-8">
-          <TransactionForm onAddTransaction={addTransaction} />
           <DataManagement transactions={transactions} onClearData={clearTransactions} />
         </div>
       </div>
