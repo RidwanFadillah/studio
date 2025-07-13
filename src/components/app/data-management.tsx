@@ -28,8 +28,8 @@ export default function DataManagement({ transactions, onClearData }: DataManage
   const handleDownload = () => {
     if (transactions.length === 0) {
       toast({
-        title: 'No Data to Export',
-        description: 'Add some transactions before exporting.',
+        title: 'Tidak Ada Data untuk Diekspor',
+        description: 'Tambahkan beberapa transaksi sebelum mengekspor.',
         variant: 'destructive',
       });
       return;
@@ -54,48 +54,48 @@ export default function DataManagement({ transactions, onClearData }: DataManage
     document.body.removeChild(link);
 
     toast({
-      title: 'Data Exported!',
-      description: 'Your transactions have been downloaded as a CSV file.',
+      title: 'Data Diekspor!',
+      description: 'Transaksi Anda telah diunduh sebagai file CSV.',
     });
   };
 
   const handleClear = () => {
     onClearData();
     toast({
-      title: 'Data Cleared',
-      description: 'All your transaction data has been removed.',
+      title: 'Data Dihapus',
+      description: 'Semua data transaksi Anda telah dihapus.',
     });
   };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Data Management</CardTitle>
+        <CardTitle>Manajemen Data</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <Button onClick={handleDownload} variant="outline" className="w-full">
           <Download className="mr-2 h-4 w-4" />
-          Download Data (CSV)
+          Unduh Data (CSV)
         </Button>
 
         <AlertDialog>
           <AlertDialogTrigger asChild>
             <Button variant="destructive" className="w-full">
               <Trash2 className="mr-2 h-4 w-4" />
-              Clear All Data
+              Hapus Semua Data
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogTitle>Apakah Anda benar-benar yakin?</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete all your transaction data from this
-                browser.
+                Tindakan ini tidak dapat dibatalkan. Ini akan menghapus secara permanen semua data transaksi Anda dari
+                browser ini.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={handleClear}>Continue</AlertDialogAction>
+              <AlertDialogCancel>Batal</AlertDialogCancel>
+              <AlertDialogAction onClick={handleClear}>Lanjutkan</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

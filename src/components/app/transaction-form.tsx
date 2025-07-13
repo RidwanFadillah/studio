@@ -16,15 +16,15 @@ import { Sparkles, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const incomeSchema = z.object({
-  description: z.string().min(2, { message: 'Description must be at least 2 characters.' }),
-  amount: z.coerce.number().positive({ message: 'Please enter a positive amount.' }),
+  description: z.string().min(2, { message: 'Deskripsi minimal harus 2 karakter.' }),
+  amount: z.coerce.number().positive({ message: 'Silakan masukkan jumlah yang positif.' }),
 });
 
 const spendingSchema = z.object({
-  description: z.string().min(2, { message: 'Description must be at least 2 characters.' }),
-  amount: z.coerce.number().positive({ message: 'Please enter a positive amount.' }),
+  description: z.string().min(2, { message: 'Deskripsi minimal harus 2 karakter.' }),
+  amount: z.coerce.number().positive({ message: 'Silakan masukkan jumlah yang positif.' }),
   category: z.enum(spendingCategories, {
-    errorMap: () => ({ message: 'Please select a category.' }),
+    errorMap: () => ({ message: 'Silakan pilih kategori.' }),
   }),
 });
 
@@ -60,8 +60,8 @@ export default function TransactionForm({ onAddTransaction }: TransactionFormPro
     const description = spendingForm.getValues('description');
     if (!description) {
       toast({
-        title: 'Description needed',
-        description: 'Please enter a description to suggest a category.',
+        title: 'Deskripsi diperlukan',
+        description: 'Silakan masukkan deskripsi untuk menyarankan kategori.',
         variant: 'destructive',
       });
       return;
@@ -74,20 +74,20 @@ export default function TransactionForm({ onAddTransaction }: TransactionFormPro
             shouldValidate: true,
           });
           toast({
-            title: 'Category Suggested!',
-            description: `We've set the category to "${result.category}".`,
+            title: 'Kategori Disarankan!',
+            description: `Kami telah mengatur kategori menjadi "${result.category}".`,
           });
         } else {
           toast({
-            title: 'Suggestion Failed',
-            description: 'Could not suggest a valid category. Please select one manually.',
+            title: 'Saran Gagal',
+            description: 'Tidak dapat menyarankan kategori yang valid. Silakan pilih secara manual.',
             variant: 'destructive',
           });
         }
       } catch (error) {
         toast({
           title: 'Error',
-          description: 'An error occurred while suggesting a category.',
+          description: 'Terjadi kesalahan saat menyarankan kategori.',
           variant: 'destructive',
         });
       }
@@ -97,13 +97,13 @@ export default function TransactionForm({ onAddTransaction }: TransactionFormPro
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Add Transaction</CardTitle>
+        <CardTitle>Tambah Transaksi</CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="spending" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="spending">Spending</TabsTrigger>
-            <TabsTrigger value="income">Income</TabsTrigger>
+            <TabsTrigger value="spending">Pengeluaran</TabsTrigger>
+            <TabsTrigger value="income">Pemasukan</TabsTrigger>
           </TabsList>
           <TabsContent value="spending">
             <Form {...spendingForm}>
@@ -113,9 +113,9 @@ export default function TransactionForm({ onAddTransaction }: TransactionFormPro
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Description</FormLabel>
+                      <FormLabel>Deskripsi</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Coffee, Train ticket" {...field} />
+                        <Input placeholder="cth: Kopi, Tiket kereta" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -126,9 +126,9 @@ export default function TransactionForm({ onAddTransaction }: TransactionFormPro
                   name="amount"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Amount</FormLabel>
+                      <FormLabel>Jumlah</FormLabel>
                       <FormControl>
-                        <Input type="number" step="0.01" placeholder="0.00" {...field} />
+                        <Input type="number" step="1" placeholder="0" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -139,12 +139,12 @@ export default function TransactionForm({ onAddTransaction }: TransactionFormPro
                   name="category"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Category</FormLabel>
+                      <FormLabel>Kategori</FormLabel>
                       <div className="flex items-center gap-2">
                         <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select a category" />
+                              <SelectValue placeholder="Pilih kategori" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -161,7 +161,7 @@ export default function TransactionForm({ onAddTransaction }: TransactionFormPro
                           size="icon"
                           onClick={handleSuggestCategory}
                           disabled={isSuggesting}
-                          aria-label="Suggest Category"
+                          aria-label="Sarankan Kategori"
                         >
                           {isSuggesting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
                         </Button>
@@ -172,7 +172,7 @@ export default function TransactionForm({ onAddTransaction }: TransactionFormPro
                 />
                 <Button type="submit" className="w-full" disabled={spendingForm.formState.isSubmitting}>
                   {spendingForm.formState.isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                  Add Spending
+                  Tambah Pengeluaran
                 </Button>
               </form>
             </Form>
@@ -185,9 +185,9 @@ export default function TransactionForm({ onAddTransaction }: TransactionFormPro
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Description</FormLabel>
+                      <FormLabel>Deskripsi</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Salary, Freelance project" {...field} />
+                        <Input placeholder="cth: Gaji, Proyek lepas" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -198,9 +198,9 @@ export default function TransactionForm({ onAddTransaction }: TransactionFormPro
                   name="amount"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Amount</FormLabel>
+                      <FormLabel>Jumlah</FormLabel>
                       <FormControl>
-                        <Input type="number" step="0.01" placeholder="0.00" {...field} />
+                        <Input type="number" step="1" placeholder="0" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -208,7 +208,7 @@ export default function TransactionForm({ onAddTransaction }: TransactionFormPro
                 />
                 <Button type="submit" className="w-full" disabled={incomeForm.formState.isSubmitting}>
                    {incomeForm.formState.isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                  Add Income
+                  Tambah Pemasukan
                 </Button>
               </form>
             </Form>

@@ -11,6 +11,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { spendingCategories } from '@/lib/types';
 
 const CategorizeSpendingInputSchema = z.object({
   description: z.string().describe('The description of the spending transaction.'),
@@ -18,7 +19,7 @@ const CategorizeSpendingInputSchema = z.object({
 export type CategorizeSpendingInput = z.infer<typeof CategorizeSpendingInputSchema>;
 
 const CategorizeSpendingOutputSchema = z.object({
-  category: z.string().describe('The suggested category for the spending transaction (e.g., Food, Transport, Bills).'),
+  category: z.string().describe('The suggested category for the spending transaction (e.g., Makanan, Transportasi, Tagihan).'),
 });
 export type CategorizeSpendingOutput = z.infer<typeof CategorizeSpendingOutputSchema>;
 
@@ -30,13 +31,13 @@ const prompt = ai.definePrompt({
   name: 'categorizeSpendingPrompt',
   input: {schema: CategorizeSpendingInputSchema},
   output: {schema: CategorizeSpendingOutputSchema},
-  prompt: `You are a personal finance assistant.  You will suggest a spending category for a given transaction description.
+  prompt: `Anda adalah asisten keuangan pribadi. Anda akan menyarankan kategori pengeluaran untuk deskripsi transaksi yang diberikan.
 
-Transaction Description: {{{description}}}
+Deskripsi Transaksi: {{{description}}}
 
-Suggest a single category for this transaction. The category should be one of the following: Food, Transport, Bills, Entertainment, Shopping, Travel, Other.
+Sarankan satu kategori untuk transaksi ini. Kategori harus salah satu dari berikut: ${spendingCategories.join(', ')}.
 
-Respond with ONLY the name of the category.
+Balas HANYA dengan nama kategori.
 `,
 });
 

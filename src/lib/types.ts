@@ -1,11 +1,11 @@
 export const spendingCategories = [
-  'Food',
-  'Transport',
-  'Bills',
-  'Entertainment',
-  'Shopping',
-  'Travel',
-  'Other',
+  'Makanan',
+  'Transportasi',
+  'Tagihan',
+  'Hiburan',
+  'Belanja',
+  'Perjalanan',
+  'Lainnya',
 ] as const;
 
 export type SpendingCategory = (typeof spendingCategories)[number];

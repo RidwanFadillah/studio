@@ -17,7 +17,7 @@ export default function Home() {
           <Rocket className="h-10 w-10 text-accent" />
           PocketBalance
         </h1>
-        <p className="text-muted-foreground">Your simple cashflow tracker.</p>
+        <p className="text-muted-foreground">Pelacak arus kas sederhana Anda.</p>
       </header>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">

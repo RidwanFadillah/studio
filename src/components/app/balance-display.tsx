@@ -25,9 +25,11 @@ export default function BalanceDisplay({ transactions }: BalanceDisplayProps) {
   }, [transactions]);
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('id-ID', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     }).format(amount);
   };
 
@@ -35,7 +37,7 @@ export default function BalanceDisplay({ transactions }: BalanceDisplayProps) {
     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Income</CardTitle>
+          <CardTitle className="text-sm font-medium">Total Pemasukan</CardTitle>
           <TrendingUp className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -44,7 +46,7 @@ export default function BalanceDisplay({ transactions }: BalanceDisplayProps) {
       </Card>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Spending</CardTitle>
+          <CardTitle className="text-sm font-medium">Total Pengeluaran</CardTitle>
           <TrendingDown className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
@@ -53,7 +55,7 @@ export default function BalanceDisplay({ transactions }: BalanceDisplayProps) {
       </Card>
       <Card className="bg-accent/50">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Current Balance</CardTitle>
+          <CardTitle className="text-sm font-medium">Saldo Saat Ini</CardTitle>
           <Wallet className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>

@@ -19,13 +19,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import type { SpendingCategory, Transaction } from '@/lib/types';
 
 const categoryIcons: Record<SpendingCategory, React.ElementType> = {
-  Food: Utensils,
-  Transport: Car,
-  Bills: Receipt,
-  Entertainment: Ticket,
-  Shopping: ShoppingBag,
-  Travel: Plane,
-  Other: CircleHelp,
+  Makanan: Utensils,
+  Transportasi: Car,
+  Tagihan: Receipt,
+  Hiburan: Ticket,
+  Belanja: ShoppingBag,
+  Perjalanan: Plane,
+  Lainnya: CircleHelp,
 };
 
 interface TransactionListProps {
@@ -34,14 +34,16 @@ interface TransactionListProps {
 
 export default function TransactionList({ transactions }: TransactionListProps) {
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
+    return new Intl.NumberFormat('id-ID', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
     }).format(amount);
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('id-ID', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -59,7 +61,7 @@ export default function TransactionList({ transactions }: TransactionListProps) 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent Transactions</CardTitle>
+        <CardTitle>Transaksi Terkini</CardTitle>
       </CardHeader>
       <CardContent>
         <ScrollArea className="h-96">
@@ -67,10 +69,10 @@ export default function TransactionList({ transactions }: TransactionListProps) 
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[50px]">Type</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
-                  <TableHead className="hidden text-right md:table-cell">Date</TableHead>
+                  <TableHead className="w-[50px]">Jenis</TableHead>
+                  <TableHead>Deskripsi</TableHead>
+                  <TableHead className="text-right">Jumlah</TableHead>
+                  <TableHead className="hidden text-right md:table-cell">Tanggal</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -103,8 +105,8 @@ export default function TransactionList({ transactions }: TransactionListProps) 
           ) : (
             <div className="flex h-full flex-col items-center justify-center gap-4 py-16 text-center">
               <Wallet className="h-16 w-16 text-muted-foreground/50" />
-              <h3 className="text-xl font-semibold">No Transactions Yet</h3>
-              <p className="text-muted-foreground">Add your first income or spending to get started.</p>
+              <h3 className="text-xl font-semibold">Belum Ada Transaksi</h3>
+              <p className="text-muted-foreground">Tambahkan pemasukan atau pengeluaran pertamamu untuk memulai.</p>
             </div>
           )}
         </ScrollArea>
