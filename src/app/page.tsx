@@ -26,11 +26,11 @@ export default function Home() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           <div className="flex flex-col gap-8">
             <TransactionForm onAddTransaction={addTransaction} />
-            <DataManagement transactions={transactions} onClearData={clearTransactions} />
+            <TransactionList transactions={transactions} />
           </div>
 
           <div className="flex flex-col gap-8">
-            <TransactionList transactions={transactions} />
+            <DataManagement transactions={transactions} onClearData={clearTransactions} />
           </div>
         </div>
       </div>
