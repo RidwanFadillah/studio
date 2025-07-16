@@ -5,7 +5,7 @@ import { useState, useRef, useTransition, type ChangeEvent, useEffect } from 're
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Upload, Loader2, Image as ImageIcon, Camera, SwitchCamera, Circle } from 'lucide-react';
+import { Upload, Loader2, Image as ImageIcon, Camera, SwitchCamera } from 'lucide-react';
 import Image from 'next/image';
 import { scanReceiptAction } from '@/app/actions';
 import type { ScanReceiptOutput } from '@/ai/flows/scan-receipt';
@@ -21,16 +21,24 @@ export default function ReceiptScanner({ onScanSuccess }: ReceiptScannerProps) {
   const [preview, setPreview] = useState<string | null>(null);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
+  const [cameraFacingMode, setCameraFacingMode] = useState<'user' | 'environment'>('environment');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { toast } = useToast();
 
   useEffect(() => {
+    // Stop any existing stream before starting a new one
+    if (videoRef.current && videoRef.current.srcObject) {
+      const stream = videoRef.current.srcObject as MediaStream;
+      stream.getTracks().forEach(track => track.stop());
+      videoRef.current.srcObject = null;
+    }
+    
     const getCameraPermission = async () => {
       if (isCameraOpen) {
         try {
-          const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: cameraFacingMode } });
           setHasCameraPermission(true);
           if (videoRef.current) {
             videoRef.current.srcObject = stream;
@@ -42,28 +50,21 @@ export default function ReceiptScanner({ onScanSuccess }: ReceiptScannerProps) {
           toast({
             variant: 'destructive',
             title: 'Akses Kamera Ditolak',
-            description: 'Mohon izinkan akses kamera di pengaturan browser Anda.',
+            description: `Tidak bisa mengakses kamera mode "${cameraFacingMode}". Coba mode lain atau izinkan di pengaturan browser.`,
           });
-        }
-      } else {
-        // Stop camera stream when not in use
-        if (videoRef.current && videoRef.current.srcObject) {
-          const stream = videoRef.current.srcObject as MediaStream;
-          stream.getTracks().forEach(track => track.stop());
-          videoRef.current.srcObject = null;
         }
       }
     };
     getCameraPermission();
 
     return () => {
-        // Cleanup function to stop camera stream on component unmount
-        if (videoRef.current && videoRef.current.srcObject) {
-            const stream = videoRef.current.srcObject as MediaStream;
-            stream.getTracks().forEach(track => track.stop());
-        }
+      // Cleanup function to stop camera stream on component unmount or when camera closes
+      if (videoRef.current && videoRef.current.srcObject) {
+          const stream = videoRef.current.srcObject as MediaStream;
+          stream.getTracks().forEach(track => track.stop());
+      }
     }
-  }, [isCameraOpen, toast]);
+  }, [isCameraOpen, cameraFacingMode, toast]);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -114,6 +115,10 @@ export default function ReceiptScanner({ onScanSuccess }: ReceiptScannerProps) {
       setPreview(null);
       setIsCameraOpen(true);
     }
+  };
+  
+  const handleSwitchCamera = () => {
+    setCameraFacingMode(prev => (prev === 'user' ? 'environment' : 'user'));
   };
 
   const handleCapture = () => {
@@ -171,9 +176,14 @@ export default function ReceiptScanner({ onScanSuccess }: ReceiptScannerProps) {
       
       <div className="grid grid-cols-2 gap-2">
         {isCameraOpen ? (
-          <Button onClick={handleCapture} disabled={!hasCameraPermission}>
-            <Camera className="mr-2" /> Ambil Gambar
-          </Button>
+          <>
+            <Button onClick={handleCapture} disabled={!hasCameraPermission}>
+              <Camera className="mr-2" /> Ambil Gambar
+            </Button>
+            <Button onClick={handleSwitchCamera} variant="outline" disabled={!hasCameraPermission}>
+              <SwitchCamera className="mr-2" /> Ganti Kamera
+            </Button>
+          </>
         ) : (
           <Button onClick={handleScanReceipt} disabled={!preview || isScanning} className="col-span-2">
             {isScanning ? (
