@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { scanReceiptAction } from '@/app/actions';
 import type { ScanReceiptOutput } from '@/ai/flows/scan-receipt';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { cn } from '@/lib/utils';
 
 interface ReceiptScannerProps {
   onScanSuccess: (data: ScanReceiptOutput) => void;
@@ -141,7 +142,7 @@ export default function ReceiptScanner({ onScanSuccess }: ReceiptScannerProps) {
       <canvas ref={canvasRef} className="hidden" />
 
       <Card className="flex aspect-video w-full flex-col items-center justify-center overflow-hidden border-2 border-dashed bg-muted/50">
-        <CardContent className="flex h-full w-full flex-col items-center justify-center p-0 text-center">
+        <CardContent className={cn("flex h-full w-full flex-col items-center justify-center p-0 text-center", preview && 'relative')}>
           {isCameraOpen ? (
              <div className="relative h-full w-full">
                <video ref={videoRef} className="h-full w-full object-cover" autoPlay muted playsInline />
